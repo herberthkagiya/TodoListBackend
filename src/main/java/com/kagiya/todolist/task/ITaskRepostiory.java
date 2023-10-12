@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ITaskRepostiory extends JpaRepository<TaskModel, UUID> {
     List<TaskModel> findByIdUser(UUID idUser);
+
+        
 }
