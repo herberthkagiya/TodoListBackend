@@ -61,7 +61,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskModel update(
+    public ResponseEntity update(
         @RequestBody TaskModel taskModel,
         HttpServletRequest request,
         @PathVariable UUID id
@@ -69,7 +69,24 @@ public class TaskController {
 
         var task = this.repostiory.findById(id).orElse(null);
 
+        if(task == null){
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Task doesn't exists");
+        }
+
+        var idUser = request.getAttribute("idUser");
+
+        if(!idUser.equals(task.getIdUser())){
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Autenticated user doesn't have permission to update this task");
+        }
+
         Utils.copyNonNullProperties(taskModel, task);
-        return this.repostiory.save(task);
+
+        var updatedTask = this.repostiory.save(task);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
     }
 }
