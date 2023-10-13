@@ -51,6 +51,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(createdTask);
     }
 
+
     @GetMapping("/")
     public List<TaskModel> list(HttpServletRequest request){
 
@@ -60,6 +61,7 @@ public class TaskController {
         return tasks;
     }
 
+    
     @PutMapping("/{id}")
     public ResponseEntity update(
         @RequestBody TaskModel taskModel,
